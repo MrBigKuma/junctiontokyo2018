@@ -15,7 +15,8 @@ class RegisterItemActivity : AppCompatActivity() {
 		setContentView(R.layout.activity_register_item)
 		supportActionBar?.setHomeButtonEnabled(true)
 		supportActionBar?.setDisplayHomeAsUpEnabled(true)
-		supportActionBar?.setIcon(R.drawable.ic_arrow_back)
+		supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
+		supportActionBar?.title = "Register item"
 
 		btnDate.text = LocalDate.now().toString()
 		val now = LocalDateTime.now()

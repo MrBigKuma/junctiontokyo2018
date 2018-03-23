@@ -26,7 +26,7 @@ import io.batteryteam.dropboxofthings.dummy.DummyContent.DummyItem
  */
 class ItemFragment : Fragment() {
 	// TODO: Customize parameters
-	private var mColumnCount = 2
+	private var mColumnCount = 3
 	private var mListener: OnListFragmentInteractionListener? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {

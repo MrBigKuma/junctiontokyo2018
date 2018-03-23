@@ -3,7 +3,6 @@ package io.batteryteam.dropboxofthings
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -60,24 +59,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 	override fun onNavigationItemSelected(item: MenuItem): Boolean {
 		// Handle navigation view item clicks here.
 		when (item.itemId) {
-			R.id.nav_camera -> {
-				// Handle the camera action
-			}
-			R.id.nav_gallery -> {
-
-			}
-			R.id.nav_slideshow -> {
-
-			}
-			R.id.nav_manage -> {
-
-			}
-			R.id.nav_share -> {
-
-			}
-			R.id.nav_send -> {
-
-			}
+			R.id.nav_data_usage -> startActivity(Intent(this, DataUsageActivity::class.java))
 		}
 
 		drawer_layout.closeDrawer(GravityCompat.START)
@@ -85,6 +67,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 	}
 
 	override fun onListFragmentInteraction(item: DummyContent.DummyItem) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		startActivity(Intent(this, ItemDetailActivity::class.java))
 	}
 }

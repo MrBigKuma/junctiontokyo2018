@@ -25,6 +25,7 @@ class MyItemRecyclerViewAdapter(private val mValues: List<DummyItem>, private va
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 		val item = mValues.get(position)
 		holder.mItem = item
+		holder.mContentView.setImageResource(R.drawable.teddy1)
 
 		holder.mView.setOnClickListener({
 			if (null != mListener) {

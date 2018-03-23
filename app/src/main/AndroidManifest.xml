@@ -19,7 +19,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterItemActivity"></activity>
+        <activity
+            android:name=".RegisterItemActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ItemDetailActivity"
+            android:label="@string/title_activity_item_detail"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DataUsageActivity"
+            android:label="Data Usage"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
