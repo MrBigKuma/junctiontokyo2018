@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import io.batteryteam.dropboxofthings.dummy.DummyContent
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -20,7 +19,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 		setContentView(R.layout.activity_main)
 		setSupportActionBar(toolbar)
 
-		fab.setOnClickListener { view ->
+		fab.setOnClickListener { _ ->
 			startActivity(Intent(this, RegisterItemActivity::class.java))
 		}
 
@@ -66,7 +65,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 		return true
 	}
 
-	override fun onListFragmentInteraction(item: DummyContent.DummyItem) {
-		startActivity(Intent(this, ItemDetailActivity::class.java))
+	override fun onListFragmentInteraction(item: TerradaItem) {
+		val intent = Intent(this, ItemDetailActivity::class.java)
+		intent.putExtra(ItemDetailActivity.ITEM_ID, item.id)
+		startActivity(intent)
 	}
 }

@@ -9,9 +9,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import io.batteryteam.dropboxofthings.dummy.DummyContent
-import io.batteryteam.dropboxofthings.dummy.DummyContent.DummyItem
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 /**
  * A fragment representing a list of Items.
@@ -31,6 +30,15 @@ class ItemFragment : Fragment() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+
+		doAsync {
+			val items = ApiService.getItems()
+			uiThread {
+				ItemRepo.ITEMS.clear()
+				ItemRepo.ITEMS.addAll(items)
+				((view as RecyclerView).adapter as MyItemRecyclerViewAdapter).notifyDataSetChanged()
+			}
+		}
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +53,7 @@ class ItemFragment : Fragment() {
 			} else {
 				view.layoutManager = GridLayoutManager(context, mColumnCount)
 			}
-			view.adapter = MyItemRecyclerViewAdapter(DummyContent.ITEMS, mListener)
+			view.adapter = MyItemRecyclerViewAdapter(ItemRepo.ITEMS, mListener)
 		}
 		return view
 	}
@@ -76,7 +84,7 @@ class ItemFragment : Fragment() {
 	 */
 	interface OnListFragmentInteractionListener {
 		// TODO: Update argument type and name
-		fun onListFragmentInteraction(item: DummyItem)
+		fun onListFragmentInteraction(item: TerradaItem)
 	}
 
 	companion object {
