@@ -13,7 +13,7 @@
         android:text="ETH wallet: 0.19 ETH" />
 
     <fragment
-        android:id="@+id/fragmentMarketActivity"
+        android:id="@+id/fragmentMarket"
         android:name="io.batteryteam.dropboxofthings.MarketItemFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -35,7 +35,9 @@ class AddItemToStoreActivity : AppCompatActivity(), ItemFragment.OnListFragmentI
 				.setNeutralButton("Cancel", null)
 				.setPositiveButton("Put on Store", { _, _ ->
 					doAsync {
-						ApiService.publicItem(item.id, editText.text.toString())
+						val priceEth = editText.text.toString()
+						ApiService.publicItem(item.id, priceEth)
+						ApiService.sellOnBlockChain(item.id, priceEth)
 						uiThread {
 							it.startActivity(Intent(it, StoreActivity::class.java))
 						}
