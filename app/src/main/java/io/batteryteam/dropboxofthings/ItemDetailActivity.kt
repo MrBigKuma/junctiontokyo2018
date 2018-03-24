@@ -20,29 +20,55 @@ class ItemDetailActivity : AppCompatActivity() {
 					startActivity(Intent(this, MainActivity::class.java))
 					return
 				}
-
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_item_detail)
 		setSupportActionBar(toolbar)
 		supportActionBar?.setDisplayHomeAsUpEnabled(true)
 		supportActionBar?.title = item.name
 
-		fab.setOnClickListener { view ->
-			AlertDialog.Builder(this)
-					.setTitle("Retrieve item")
-					.setMessage("Do you want to send the item back home from warehouse?")
-					.setNeutralButton("Cancel", null)
-					.setPositiveButton("retrieve", { _, _ ->
-						Log.d("ItemDetailActivity", itemId)
-						doAsync {
-							ApiService.issuingItem(itemId)
-							uiThread {
-								Toast.makeText(it, "Request sent", Toast.LENGTH_SHORT).show()
-								it.finish()
-								startActivity(Intent(it, MainActivity::class.java))
-							}
-						}
-					}).show()
+		imgItem.setImageResource(item.resId)
+
+		when (item.storageStatus) {
+			"storage" -> {
+				fab.setImageResource(R.drawable.ic_cloud_download)
+				fab.setOnClickListener { _ ->
+					AlertDialog.Builder(this)
+							.setTitle("Retrieve item")
+							.setMessage("Do you want to send the item back home from storage?")
+							.setNeutralButton("Cancel", null)
+							.setPositiveButton("retrieve", { _, _ ->
+								Log.d("ItemDetailActivity", itemId)
+								doAsync {
+									ApiService.issuingItem(itemId)
+									uiThread {
+										Toast.makeText(it, "Request sent", Toast.LENGTH_SHORT).show()
+										it.finish()
+										startActivity(Intent(it, MainActivity::class.java))
+									}
+								}
+							}).show()
+				}
+			}
+			else -> {
+				fab.setImageResource(R.drawable.ic_cloud_upload)
+				fab.setOnClickListener { _ ->
+					AlertDialog.Builder(this)
+							.setTitle("Upload item")
+							.setMessage("Do you want to send the item to storage?")
+							.setNeutralButton("Cancel", null)
+							.setPositiveButton("Send", { _, _ ->
+								Log.d("ItemDetailActivity", itemId)
+								doAsync {
+									ApiService.storeItemAgain(itemId)
+									uiThread {
+										Toast.makeText(it, "Request sent", Toast.LENGTH_SHORT).show()
+										it.finish()
+										startActivity(Intent(it, MainActivity::class.java))
+									}
+								}
+							}).show()
+				}
+			}
 		}
 	}
 

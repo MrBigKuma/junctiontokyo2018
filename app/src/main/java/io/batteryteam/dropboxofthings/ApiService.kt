@@ -2,7 +2,9 @@ package io.batteryteam.dropboxofthings
 
 import android.util.Log
 import com.github.kittinunf.fuel.gson.responseObject
+import com.github.kittinunf.fuel.httpDelete
 import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.fuel.httpPatch
 import com.github.kittinunf.fuel.httpPost
 import com.google.gson.Gson
 
@@ -34,8 +36,25 @@ object ApiService {
 		Log.d("ApiService", result.toString())
 	}
 
+	fun storeItemAgain(itemId: String) {
+		val (_, _, result) = "$BASE_URL/item".httpPatch(listOf(
+				"oem_key" to OEM_KEY,
+				"item_id" to itemId,
+				"storage_status" to "storage"
+		)).response()
+		Log.d("ApiService", result.toString())
+	}
+
 	fun issuingItem(itemId: String) {
 		val (_, _, result) = "$BASE_URL/issuing?oem_key=$OEM_KEY".httpPost(listOf(
+				"item_id" to itemId
+		)).response()
+		Log.d("ApiService", result.toString())
+	}
+
+	fun deleteItem(itemId: String) {
+		val (_, _, result) = "$BASE_URL/item".httpDelete(listOf(
+				"oem_key" to OEM_KEY,
 				"item_id" to itemId
 		)).response()
 		Log.d("ApiService", result.toString())

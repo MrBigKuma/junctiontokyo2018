@@ -17,6 +17,13 @@
         tools:src="@drawable/teddy1" />
 
     <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@drawable/ic_triangle" />
+
+    <ImageView
         android:id="@+id/imgStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

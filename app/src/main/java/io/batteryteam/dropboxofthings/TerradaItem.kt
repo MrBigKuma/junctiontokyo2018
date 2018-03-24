@@ -22,5 +22,7 @@ class TerradaItem(
 		var issuingAddress: String = "",
 
 		@SerializedName("common01")
-		var name: String = ""
+		var name: String = "",
+
+		var resId: Int = 0
 )
