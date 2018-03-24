@@ -14,7 +14,7 @@ object ApiService {
 	fun getItems(): List<TerradaItem> {
 		val (_, _, result) = "$BASE_URL/item?oem_key=$OEM_KEY".httpGet().responseObject<ApiResponse>()
 		Log.d("ApiService", result.toString())
-		return result.get().results
+		return result.get().results.filter { it.customerId == CUSTOMER_ID }
 	}
 
 	/**
@@ -60,9 +60,19 @@ object ApiService {
 		Log.d("ApiService", result.toString())
 	}
 
+	fun sendItem(itemId: String) {
+		val (_, _, result) = "$BASE_URL/item".httpPatch(listOf(
+				"oem_key" to OEM_KEY,
+				"item_id" to itemId,
+				"customer_id" to FRIEND1_ID
+		)).response()
+		Log.d("ApiService", result.toString())
+	}
+
 	private const val BASE_URL = "https://junction-tokyo.minikura.com/v1/minikura"
 	private const val OEM_KEY = "4e6d869e84072317"
 	private const val CUSTOMER_ID = "1" // TODO: replace for every demo application
+	private const val FRIEND1_ID = "2" // TODO: replace for every demo application
 	private const val HOME_ADDRESS = "223-0014 Tsunashima Letdo building 203"
 	private val gson = Gson()
 }

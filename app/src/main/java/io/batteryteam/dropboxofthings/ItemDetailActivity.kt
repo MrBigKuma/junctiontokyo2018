@@ -5,15 +5,18 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
 class ItemDetailActivity : AppCompatActivity() {
+	private lateinit var itemId: String
 
 	override fun onCreate(savedInstanceState: Bundle?) {
-		val itemId = intent.getStringExtra(ITEM_ID)
+		itemId = intent.getStringExtra(ITEM_ID)
 		val item = ItemRepo.ITEMS.find { it.id == itemId }
 				?: run {
 					this.finish()
@@ -70,6 +73,32 @@ class ItemDetailActivity : AppCompatActivity() {
 				}
 			}
 		}
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+		menuInflater.inflate(R.menu.menu_detail_item, menu)
+		return super.onCreateOptionsMenu(menu)
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean {
+		when (item.itemId) {
+			R.id.action_send -> {
+				AlertDialog.Builder(this)
+						.setTitle("Send Item")
+						.setView(layoutInflater.inflate(R.layout.dialog_send_to_friend, null))
+						.setNeutralButton("Cancel", null)
+						.setPositiveButton("Send", { _, _ ->
+							doAsync {
+								ApiService.sendItem(itemId)
+								uiThread {
+									it.finish()
+									startActivity(Intent(it, MainActivity::class.java))
+								}
+							}
+						}).show()
+			}
+		}
+		return super.onOptionsItemSelected(item)
 	}
 
 	companion object {
