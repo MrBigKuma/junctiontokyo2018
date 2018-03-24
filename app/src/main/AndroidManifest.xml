@@ -33,6 +33,22 @@
             android:name=".DataUsageActivity"
             android:label="Data Usage"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".StoreActivity"
+            android:label="My Store"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.batteryteam.dropboxofthings.MainActivity" />
+        </activity>
+        <activity
+            android:name=".AddItemToStoreActivity"
+            android:label="Add Item to Store"
+            android:parentActivityName=".StoreActivity" />
+        <activity
+            android:name=".MarketActivity"
+            android:label="Market"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

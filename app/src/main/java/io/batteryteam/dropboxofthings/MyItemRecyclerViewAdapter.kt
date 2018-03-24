@@ -12,12 +12,7 @@ import kotlinx.android.synthetic.main.fragment_item.view.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-/**
- * [RecyclerView.Adapter] that can display a [TerradaItem] and makes a call to the
- * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
- */
-class MyItemRecyclerViewAdapter(private val mValues: List<TerradaItem>, private val mListener: OnListFragmentInteractionListener?) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
+class MyItemRecyclerViewAdapter(var values: List<TerradaItem>, private val mListener: OnListFragmentInteractionListener?) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val view = LayoutInflater.from(parent.context)
@@ -26,7 +21,7 @@ class MyItemRecyclerViewAdapter(private val mValues: List<TerradaItem>, private 
 	}
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-		val item = mValues.get(position)
+		val item = values[position]
 		holder.item = item
 		holder.contentView.setImageResource(item.resId)
 		when (item.storageStatus) {
@@ -37,8 +32,6 @@ class MyItemRecyclerViewAdapter(private val mValues: List<TerradaItem>, private 
 
 		holder.view.setOnClickListener({
 			if (null != mListener) {
-				// Notify the active callbacks interface (the activity, if the
-				// fragment is attached to one) that an item has been selected.
 				mListener.onListFragmentInteraction(item)
 			}
 		})
@@ -62,7 +55,7 @@ class MyItemRecyclerViewAdapter(private val mValues: List<TerradaItem>, private 
 	}
 
 	override fun getItemCount(): Int {
-		return mValues.size
+		return values.size
 	}
 
 	inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {

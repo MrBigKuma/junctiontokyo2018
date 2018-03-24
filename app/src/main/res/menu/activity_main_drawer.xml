@@ -13,13 +13,13 @@
             android:icon="@drawable/ic_data_usage"
             android:title="Data Usage" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_home"
-            android:title="Address" />
+            android:id="@+id/nav_store"
+            android:icon="@drawable/ic_store_black_24dp"
+            android:title="Store" />
         <item
-            android:id="@+id/nav_share"
-            android:icon="@drawable/ic_menu_share"
-            android:title="Share" />
+            android:id="@+id/nav_market"
+            android:icon="@drawable/ic_shopping_cart_black_24dp"
+            android:title="Market" />
     </group>
 
     <item android:title="Account">

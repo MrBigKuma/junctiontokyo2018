@@ -5,17 +5,14 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-class ItemFragment : Fragment() {
+class StoreItemFragment : Fragment() {
 	private var listener: OnListFragmentInteractionListener? = null
-
-	private var filterOnCloudOnly: Boolean = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -23,37 +20,32 @@ class ItemFragment : Fragment() {
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
 							  savedInstanceState: Bundle?): View? {
-		val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+		val view = inflater.inflate(R.layout.fragment_store_item_list, container, false)
 
 		// Set the adapter
 		if (view is RecyclerView) {
 			val context = view.getContext()
-			view.layoutManager = GridLayoutManager(context, 3)
-
-			view.adapter = MyItemRecyclerViewAdapter(emptyList(), listener)
-
-			filterOnCloudOnly = arguments?.getBoolean(ARG_FILTER_ON_CLOUD_ONLY) ?: false
-
-			doAsync {
-				val items = ApiService.getItems()
-				uiThread {
-					ItemRepo.updateItems(items)
-					Log.d("ItemFragment", "ItemRepo.updateItems ${items.size}")
-					val adapter = view.adapter as MyItemRecyclerViewAdapter
-					val items = ItemRepo.ITEMS.filter {
-						if (filterOnCloudOnly)
-							it.storageStatus == "storage"
-						else
-							true
-					}
-					adapter.values = items
-					adapter.notifyDataSetChanged()
-				}
-			}
+			view.layoutManager = GridLayoutManager(context, 4)
+			view.adapter = StoreItemRecyclerViewAdapter(emptyList(), listener)
 		}
 		return view
 	}
 
+	override fun onStart() {
+		super.onStart()
+		doAsync {
+
+			val items = ApiService.getItems()
+			ItemRepo.ITEMS.clear()
+			ItemRepo.updateItems(items)
+			uiThread {
+				val v = view as RecyclerView
+				val adapter = v.adapter as StoreItemRecyclerViewAdapter
+				adapter.values = ItemRepo.ITEMS.filter { it.privacyStatus == "public" }
+				adapter.notifyDataSetChanged()
+			}
+		}
+	}
 
 	override fun onAttach(context: Context?) {
 		super.onAttach(context)
@@ -71,9 +63,5 @@ class ItemFragment : Fragment() {
 
 	interface OnListFragmentInteractionListener {
 		fun onListFragmentInteraction(item: TerradaItem)
-	}
-
-	companion object {
-		const val ARG_FILTER_ON_CLOUD_ONLY = "ARG_FILTER_ON_CLOUD_ONLY"
 	}
 }

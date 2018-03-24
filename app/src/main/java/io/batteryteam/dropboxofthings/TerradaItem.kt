@@ -24,5 +24,8 @@ class TerradaItem(
 		@SerializedName("common01")
 		var name: String = "",
 
+		@SerializedName("common02")
+		var priceEth: String = "",
+
 		var resId: Int = 0
 )

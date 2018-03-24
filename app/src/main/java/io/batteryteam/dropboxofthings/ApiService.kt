@@ -12,9 +12,19 @@ import com.google.gson.Gson
 object ApiService {
 
 	fun getItems(): List<TerradaItem> {
-		val (_, _, result) = "$BASE_URL/item?oem_key=$OEM_KEY".httpGet().responseObject<ApiResponse>()
+		val (_, _, result) = "$BASE_URL/item".httpGet(listOf(
+				"oem_key" to OEM_KEY
+		)).responseObject<ApiResponse>()
 		Log.d("ApiService", result.toString())
 		return result.get().results.filter { it.customerId == CUSTOMER_ID }
+	}
+
+	fun getMarketItems(): List<TerradaItem> {
+		val (_, _, result) = "$BASE_URL/item".httpGet(listOf(
+				"oem_key" to OEM_KEY
+		)).responseObject<ApiResponse>()
+		Log.d("ApiService", result.toString())
+		return result.get().results.filter { it.privacyStatus == "public" }
 	}
 
 	/**
@@ -27,7 +37,8 @@ object ApiService {
 //	}
 
 	fun storeItem(item: TerradaItem) {
-		val (_, _, result) = "$BASE_URL/storing?oem_key=$OEM_KEY".httpPost(listOf(
+		val (_, _, result) = "$BASE_URL/storing".httpPost(listOf(
+				"oem_key" to OEM_KEY,
 				"customer_id" to CUSTOMER_ID,
 				"common01" to item.name,
 				"storing_address" to "Tokyo Storage 1",
@@ -46,7 +57,8 @@ object ApiService {
 	}
 
 	fun issuingItem(itemId: String) {
-		val (_, _, result) = "$BASE_URL/issuing?oem_key=$OEM_KEY".httpPost(listOf(
+		val (_, _, result) = "$BASE_URL/issuing".httpPost(listOf(
+				"oem_key" to OEM_KEY,
 				"item_id" to itemId
 		)).response()
 		Log.d("ApiService", result.toString())
@@ -65,6 +77,16 @@ object ApiService {
 				"oem_key" to OEM_KEY,
 				"item_id" to itemId,
 				"customer_id" to FRIEND1_ID
+		)).response()
+		Log.d("ApiService", result.toString())
+	}
+
+	fun publicItem(itemId: String, priceEth: String) {
+		val (_, _, result) = "$BASE_URL/item".httpPatch(listOf(
+				"oem_key" to OEM_KEY,
+				"item_id" to itemId,
+				"privacy_status" to "public",
+				"common02" to priceEth
 		)).response()
 		Log.d("ApiService", result.toString())
 	}
